@@ -1,1 +1,1 @@
-# comp3104
+echo "# comp3104" >> README.md
