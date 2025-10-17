@@ -1,21 +1,44 @@
 name: Deploy React App
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+
+# Trigger the workflow on every push to the main branch
+on:
+  push:
+    branches: ["main"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
+      # Step 1: Checkout repository code
       - name: Checkout code
         uses: actions/checkout@v5
       
+      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "20.x" # Use the appropriate Node.js version for your project
+          node-version: "20.x" # Adjust as needed
       
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
       
-      - name: Run test
+      # Step 4: Run tests
+      - name: Run tests
         run: npm run test
+      
+      # Step 5: Build the React app
+      - name: Build app
+        run: npm run build
+
+      # Step 6: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"
